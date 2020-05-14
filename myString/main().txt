@@ -1,0 +1,111 @@
+    #include <vector>
+#include <algorithm>
+#include "beads.h"
+using namespace std;
+
+
+
+char* operator+(const beads& arg1, const beads& arg2)
+{
+	char* retValue = new char[arg1.m_beadsLength + arg2.m_beadsLength];
+	for(int i = 0; i < arg1.m_beadsLength; i++)
+	{
+		retValue[i] = arg1.p_Beads[i];
+	}
+	for(int i = arg1.m_beadsLength; i < arg1.m_beadsLength + arg2.m_beadsLength; i++)
+	{
+		for(int j = 0; j < arg2.m_beadsLength; j++)
+		{
+			retValue[i] = arg2.p_Beads[j];
+			i++;
+		}
+	}
+	retValue[arg1.m_beadsLength + arg2.m_beadsLength] = '\0';
+	return retValue;
+}
+
+bool operator==(const beads& arg1, const beads& arg2)
+{
+	if(arg1.m_beadsLength != arg2.m_beadsLength)
+		return false;
+		
+	char* temptr1 = arg1.p_Beads;
+	char* temptr2 = arg2.p_Beads;
+	
+	while(*temptr1 != '\0' && *temptr2 != '\0')
+	{
+		if(*temptr1 != *temptr2)
+			return false;
+		temptr1++;
+		temptr2++;
+	}
+	return true;
+}
+
+ostream& operator<<	(ostream& os,		const beads& arg)
+{
+	os << arg.p_Beads;
+    return os;
+}
+
+bool 	operator>	(const beads& arg1, const beads& arg2)
+{
+	char* temptr1 = arg1.p_Beads;
+	char* temptr2 = arg2.p_Beads;
+	
+	while(*temptr1 != '\0' && *temptr2 != '\0')
+	{
+		if(tolower(*temptr1) == tolower(*temptr2))
+		{
+			temptr1++;
+			temptr2++;
+		}
+		if(tolower(*temptr1) > tolower(*temptr2))
+			return true;
+		if(tolower(*temptr1) < tolower(*temptr2))
+			return false;
+	}
+	return false;
+}
+bool 	operator<	(const beads& arg1, const beads& arg2)
+{
+	char* temptr1 = arg1.p_Beads;
+	char* temptr2 = arg2.p_Beads;
+	
+	while(*temptr1 != '\0' && *temptr2 != '\0')
+	{
+		if(tolower(*temptr1) == tolower(*temptr2))
+		{
+			temptr1++;
+			temptr2++;
+		}
+		if(tolower(*temptr1) < tolower(*temptr2))
+			return true;
+		if(tolower(*temptr1) > tolower(*temptr2))
+			return false;
+	}
+	return false;
+}
+
+int main(int argc, char** argv) {
+    vector<beads> sampleVector;
+    sampleVector.push_back(beads("math"));
+    sampleVector.push_back("english");
+    sampleVector.push_back("Chemistry");
+    sampleVector.push_back("biology");
+    sampleVector.push_back(beads("Geography"));
+    sampleVector.push_back("Math");
+    sampleVector.push_back("Computer science");
+    sampleVector.push_back("physics");
+    sampleVector.push_back("athletics");
+    sampleVector.push_back("Arts");
+    sort(sampleVector.begin(),sampleVector.end());
+    vector<beads>::reverse_iterator it = sampleVector.rbegin();
+
+    while(it != sampleVector.rend())
+    {
+        cout << *it << endl;
+        it++;
+    }
+	return 1;
+}

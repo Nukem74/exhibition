@@ -1,0 +1,143 @@
+#include "beads.h"
+
+beads::beads(const unsigned& arg) : m_beadsLength(arg), p_Beads(nullptr)
+{
+    p_Beads = new char[m_beadsLength];
+}
+beads::beads(const beads& arg) : m_beadsLength(0), p_Beads(nullptr)
+{
+    m_beadsLength = arg.m_beadsLength;
+    p_Beads = new char[m_beadsLength];
+    for(unsigned i = 0; i < m_beadsLength; i++)
+    {
+        p_Beads[i] = arg.p_Beads[i];
+    }
+    p_Beads[m_beadsLength] = '\0';
+}
+
+beads::beads(char* arg) : m_beadsLength(0), p_Beads(nullptr)
+{
+    unsigned count = 0;
+    char* temptr = arg;
+    while(*temptr != '\0')
+    {
+        count++;
+        temptr++;
+    }
+    m_beadsLength = count;
+    p_Beads = nullptr;
+    delete p_Beads;
+
+
+    p_Beads = new char[m_beadsLength];
+    for(int i = 0; i < m_beadsLength; i++)
+    {
+        p_Beads[i] = arg[i];
+    }
+    p_Beads[m_beadsLength] = '\0';
+
+    while(*temptr != '\0')
+    {
+        *temptr = 0;
+        temptr++;
+    }
+    temptr = nullptr;
+    delete temptr;
+}
+unsigned beads::length()
+{
+    return m_beadsLength;
+}
+beads::beads(beads&& arg) : m_beadsLength(arg.m_beadsLength), p_Beads(arg.p_Beads)
+{
+    arg.m_beadsLength = 0;
+    arg.p_Beads = nullptr;
+}
+void beads::operator=(const beads& arg)
+{
+    m_beadsLength = arg.m_beadsLength;
+    p_Beads = arg.p_Beads;
+    p_Beads[m_beadsLength] = '\0';
+}
+void beads::operator=(char* arg)
+{
+    unsigned count = 0;
+    char* temptr = arg;
+    while(*temptr != '\0')
+    {
+        count++;
+        temptr++;
+    }
+    m_beadsLength = count;
+    p_Beads = arg;
+    p_Beads[m_beadsLength] = '\0';
+}
+void beads::operator+=(char* arg)
+{
+    unsigned count = m_beadsLength;
+    char* temptr = arg;
+    while(*temptr != '\0')
+    {
+        count++;
+        temptr++;
+    }
+    temptr = new char[count];
+
+    for(unsigned i = 0; i < m_beadsLength; i++)
+    {
+        temptr[i] = p_Beads[i];
+    }
+
+    for(unsigned i = m_beadsLength; i < count; i++)
+    {
+        if(*arg != '\0')
+            temptr[i] = *arg;
+
+        arg++;
+    }
+
+    m_beadsLength = count;
+    p_Beads = new char[m_beadsLength];
+    for(unsigned i = 0; i < m_beadsLength; i++)
+    {
+        p_Beads[i] = temptr[i];
+    }
+    p_Beads[m_beadsLength] = '\0';
+
+    temptr = nullptr;
+    delete temptr;
+}
+
+void beads::operator+=(const beads& arg)
+{
+    beads temptr(m_beadsLength + arg.m_beadsLength);
+    for(unsigned i = 0; i < m_beadsLength; i++ )
+    {
+        temptr[i] = p_Beads[i];
+    }
+    for(unsigned i = m_beadsLength; i < (m_beadsLength + arg.m_beadsLength); i++)
+    {
+        for(unsigned j = 0; j < arg.m_beadsLength; j++)
+        {
+            temptr[i] = arg.p_Beads[j];
+            i++;
+        }
+    }
+
+    m_beadsLength = (m_beadsLength + arg.m_beadsLength);
+
+    p_Beads = new char[m_beadsLength];
+
+    for(unsigned i = 0; i < m_beadsLength; i++)
+    {
+        p_Beads[i] = temptr[i];
+    }
+    p_Beads[m_beadsLength] = '\0';
+}
+
+char& beads::operator[](unsigned arg)
+{
+    /*if(arg > m_beadsLength)
+        return nullptr;	*/
+    return p_Beads[arg];
+}

@@ -1,0 +1,39 @@
+#ifndef BEADS_H
+#define BEADS_H
+
+
+#include <iostream>
+
+class beads
+{
+    friend char* 	operator+	(const beads& arg1, const beads& arg2);
+    friend bool 	operator==	(const beads& arg1, const beads& arg2);
+    friend bool 	operator>	(const beads& arg1, const beads& arg2);
+    friend bool 	operator<	(const beads& arg1, const beads& arg2);
+    friend std::ostream& operator<<	(std::ostream& os,		const beads& arg);
+    public:
+        beads(const unsigned& arg);
+        beads(const beads& arg);
+        beads(beads&& arg);
+        beads(char* arg);
+        unsigned length();
+        /*beads(beads&& arg) : m_beadLength(arg.m_beadsLength), p_Beads(arg.p_Beads)
+        {
+            arg.m_beadsLength = 0;
+            arg.p_Beads = 0;//nullptr
+        }*/
+        void operator=(const beads& arg);
+        void operator=(char* arg);
+        void operator+=(char* arg);
+
+        void operator+=(const beads& arg);
+
+        char& operator[](unsigned arg);
+        //debug functions
+        void ones();
+        void show();	private:
+        unsigned		m_beadsLength;
+        char*  			p_Beads;
+};
+
+#endif // BEADS_H
